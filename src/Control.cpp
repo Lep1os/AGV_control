@@ -152,6 +152,8 @@ void rotate(int side) {
     }
   }
 }
+
+// Read the line sensor bits value
 unsigned int data_value() {
   unsigned int input_value = 0b0000000000000000;
   for (int i = 0; i < 16; i++) {
