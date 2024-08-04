@@ -70,7 +70,9 @@ int rotateSpeed = 25;
 #define RIGHT 420
 
 //Declare variables for speed reading
-const int speedPin = 12; 
-volatile unsigned int pulseCount = 0;
+const int speedPinleft = 20; 
+const int speedPinright = 21; 
+volatile unsigned int pulseCountleft = 0;
+volatile unsigned int pulseCountright = 0;
 unsigned long lastTime = 0;
-unsigned int pulsesPerRevolution = 6;
+unsigned int pulsesPerRevolution = 4;

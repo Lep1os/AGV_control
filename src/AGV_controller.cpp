@@ -9,10 +9,18 @@
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-
+  //Line sensor bits input
   for (int a = 0; a < 16; a++) {
     pinMode(input_pin[a], INPUT_PULLUP);
   }
+
+  // Speed signal inputs
+  pinMode(speedPinleft, INPUT);
+  pinMode(speedPinright, INPUT);
+
+  // Attach interrupts for both motors
+  attachInterrupt(digitalPinToInterrupt(speedPinleft), countLeftPulses, RISING);
+  attachInterrupt(digitalPinToInterrupt(speedPinright), countRightPulses, RISING);
 
   //Motor signals
   pinMode(FR1, OUTPUT);
@@ -25,29 +33,29 @@ void setup() {
   pinMode(6, INPUT);
   pinMode(7, INPUT);
 }
-void check();
+
+
 void loop() {
   unsigned long currentTime = millis();
   print_RPM(currentTime);
   check();
-  //Serial.println(state);
   switch (state) {
-  case 7:
+  case 7: // 0b111
     stopp();
     break;
-  case 6:
+  case 6: // 0b110
     straight();
     break;
-  case 5:
+  case 5:// 0b101
     back();
     break;
-  case 4:
+  case 4:// 0b100
     left();
     break;
-  case 3:
+  case 3:// 0b011
     right();
     break;
-  case 0:
+  case 0://0b000
     follow_line();
     break;
   default:
@@ -56,6 +64,7 @@ void loop() {
   }
 }
 
+// Check the command code sent by the esp
 void check() {
   bitWrite(state, 0, digitalRead(3));
   bitWrite(state, 1, digitalRead(6));
